@@ -1,0 +1,215 @@
+
+
+
+.shop-method-area .method-wrapper {
+    margin-top: 2rem;
+    text-decoration: none !important;
+    background: #ea0000
+}
+.shop-method-area {
+    margin: 4rem 0px !important;
+}
+.method-wrapper{
+    padding: 30px;
+
+}
+.footer-area a {
+    font-family: 'Roboto', sans-serif;
+    color: #000;
+    text-decoration: none;
+}
+
+.shop-method-area .method-wrapper .single-method {
+    padding: 43px 20px 0 45px
+}
+
+.shop-method-area .method-wrapper .single-method i {
+    font-size: 40px;
+    color: #ffff;
+    margin-bottom: 25px;
+    display: block
+}
+
+.shop-method-area .method-wrapper .single-method h6 {
+    color: #fff;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 12px;
+    font-family: "Roboto",sans-serif
+}
+
+.shop-method-area .method-wrapper .single-method p {
+    font-size: 16px;
+    color: #d3d1d1
+}
+
+.section-tittle h2 {
+    color: #000;
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1
+}
+.footer{
+    margin-top: 3rem;
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+    .section-tittle h2 {
+        font-size:37px
+    }
+}
+
+@media (max-width: 575px) {
+    .section-tittle h2 {
+        font-size:33px
+    }
+}
+
+
+.footer-area .footer-logo {
+    margin-bottom: 40px
+}
+
+.footer-area .footer-pera p {
+    color: #868c98;
+    font-size: 16px;
+    margin-bottom: 50px;
+    line-height: 1.8
+}
+
+.footer-area .footer-tittle h4 {
+    color: #000;
+    font-size: 20px;
+    margin-bottom: 29px;
+    font-weight: 500;
+    text-transform: capitalize;
+    font-family: "Roboto",sans-serif
+}
+
+.footer-area .footer-tittle ul li {
+    color: #012f5f;
+    margin-bottom: 15px
+}
+
+.footer-area .footer-tittle ul li a {
+    color: #868c98;
+    font-weight: 400;
+}
+
+.footer-area .footer-tittle ul li a:hover {
+    color: #ff2020;
+    padding-left: 5px
+}
+
+.footer-copy-right {
+    padding-top: 50px
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+    .footer-copy-right {
+        padding-top:0px;
+        float: left
+    }
+}
+
+@media only screen and (min-width: 576px) and (max-width: 767px) {
+    .footer-copy-right {
+        padding-top:0px;
+        float: left
+    }
+}
+
+@media (max-width: 575px) {
+    .footer-copy-right {
+        padding-top:0px;
+        float: left
+    }
+}
+
+.footer-copy-right p {
+    color: #888888;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 2;
+    margin-bottom: 20px
+}
+
+.footer-copy-right p i {
+    color: #ff2020
+}
+
+.footer-copy-right p a {
+    color: #ff2020
+}
+
+.footer-social a:last-child {
+    padding-right: 0
+}
+
+.footer-social a i {
+    margin-bottom: 20px;
+    color: #222222;
+    font-size: 20px;
+    padding: 0px 10px;
+    -webkit-transition: all .4s ease-out 0s;
+    -moz-transition: all .4s ease-out 0s;
+    -ms-transition: all .4s ease-out 0s;
+    -o-transition: all .4s ease-out 0s;
+    transition: all .4s ease-out 0s;
+    transform: rotateY(0deg);
+    -webkit-transform: rotateY(0deg);
+    -moz-transform: rotateY(0deg);
+    -ms-transform: rotateY(0deg);
+    -o-transform: rotateY(0deg)
+}
+
+.footer-social a i:hover {
+    color: #ff2020;
+    transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg);
+    -moz-transform: rotateY(180deg);
+    -ms-transform: rotateY(180deg);
+    -o-transform: rotateY(180deg)
+}
+
+
+.footer-padding {
+    padding-top: 150px;
+    padding-bottom: 120px
+}
+
+@media only screen and (min-width: 1200px) and (max-width: 1600px) {
+    .footer-padding {
+        padding-top:150px;
+        padding-bottom: 120px
+    }
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+    .footer-padding {
+        padding-top:100px;
+        padding-bottom: 70px
+    }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+    .footer-padding {
+        padding-top:100px;
+        padding-bottom: 70px
+    }
+}
+
+@media only screen and (min-width: 576px) and (max-width: 767px) {
+    .footer-padding {
+        padding-top:70px;
+        padding-bottom: 70px
+    }
+}
+
+@media (max-width: 575px) {
+    .footer-padding {
+        padding-top:70px;
+        padding-bottom: 70px
+    }
+}

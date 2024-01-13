@@ -1,0 +1,18 @@
+.nav_active .active{
+    background-color: #f5f5f5;
+    color: #000;
+
+}
+.d-sm{
+    display: block !important;
+}
+
+
+@media screen and (max-width: 998px) {
+.d-none{
+    display: block !important;
+}    
+.d-sm{
+    display: block !important;
+}
+}

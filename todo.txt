@@ -1,0 +1,67 @@
+
+I want to share with you this full stack task for new trainee with all the details .
+
+Task: Build a simple e-commerce website using Django and React.
+
+Requirements:
+
+DONE Use Django to create a RESTful API for the application.
+DONE Use React to create a user interface for the application.
+DONE Implement CRUD functionality for the application.
+DONE Use Bootstrap or Material UI for styling.
+DONE Implement user authentication and authorization.
+DONE Implement product search and filtering.
+Implement product pagination.
+Implement product reviews and ratings.
+Implement product recommendations using collaborative filtering.
+Steps:
+
+DONE Create a new Django project using the command django-admin startproject projectname.
+DONE Create a new Django app for the e-commerce website using the command python manage.py startapp ecommerce.
+DONE Define models for the e-commerce website in the models.py file.
+DONE Create serializers for the models in the serializers.py file.
+DONE Create views for the e-commerce website in the views.py file.
+DONE Define URL patterns for the e-commerce website in the urls.py file.
+DONE Create a React project using the command npx create-react-app frontend.
+DONE Create components for the user interface in the src/components directory.
+DONE Use Axios to make API requests to the Django backend.
+DONE Implement CRUD functionality for the e-commerce website using React components.
+DONE Implement user authentication and authorization using Django's built-in authentication system.
+
+
+Implement product search and filtering using Django's ORM.
+Implement product pagination using Django's built-in pagination system.
+Implement product reviews and ratings using Django's built-in review system.
+Implement product recommendations using collaborative filtering using a recommendation library like TensorFlow or PyTorch.
+Use Bootstrap or Material UI for styling.
+Time Estimate: 4-6 work days.
+
+
+
+
+
+
+
+
+
+
+
+
+
+Create Register / login functionality:
+
+    DONE    1- backend:
+                    - djoser
+                    - register user accounts 
+                    - login system and token authentication
+                    
+
+     Done    2-frontend:
+
+                    - register componant 
+                    - register requests
+                    - login componant
+                    - login requests
+                   X - AuthProvider
+
+

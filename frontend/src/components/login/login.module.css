@@ -1,0 +1,14 @@
+.cont{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    
+
+}
+.bg{
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+}
