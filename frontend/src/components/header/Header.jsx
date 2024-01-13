@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import {toast , ToastContainer} from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import { Link } from "react-router-dom";
 import "./Header.css";
 import logo from "../../assets/images/logo-sm.svg";
@@ -12,7 +12,7 @@ import checkout from "./Checkout";
 import { useNavigate, useLocation } from "react-router-dom";
 import axiosInstance from "../../services/config";
 import Badge from "@mui/material/Badge";
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 export default function Header() {
   const [productsDetails, setProductsDetails] = useState([]);
   const location = useLocation();
@@ -31,10 +31,8 @@ export default function Header() {
     cartItems,
   } = useShoppingCart();
 
-
-
   useEffect(() => {
-    if(localStorage.getItem("shopping-cart")===JSON.stringify([])){
+    if (localStorage.getItem("shopping-cart") === JSON.stringify([])) {
       setProductsDetails([]);
     }
     console.log(location.pathname);
@@ -67,8 +65,7 @@ export default function Header() {
             ]);
           })
           .catch((err) => {
-            console.log(err);
-            sessionStorage.setItem("isAuth","false");
+            sessionStorage.setItem("isAuth", "false");
             Navigate("/login");
           });
       });
@@ -78,44 +75,39 @@ export default function Header() {
     }
   }, [isOpen]);
 
-
-  function handelOrder(){
+  function handelOrder() {
     setShow(false);
-    
+
     const data = checkout();
-    if(data.length===0){
+    if (data.length === 0) {
       return toast.error("Cart is Empty", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
-        pauseOnHover: true, 
+        pauseOnHover: true,
         draggable: true,
         progress: undefined,
         theme: "colored",
-        });
-    }
-    else{
+      });
+    } else {
       toast.success("Order Placed", {
         position: "top-right",
         autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
-        pauseOnHover: true, 
+        pauseOnHover: true,
         draggable: true,
         progress: undefined,
         theme: "colored",
-        });
+      });
     }
-    console.log(data);
+
     setProductsDetails([]);
     setTimeout(() => {
-    window.location.reload(false);
-    } , 2000);
-
-
+      window.location.reload(false);
+    }, 2000);
   }
-
 
   return (
     <>
@@ -183,19 +175,17 @@ export default function Header() {
               </li>
             </ul>
           </div>
-          
-            <button
-              onClick={() => openCart()}
-              className="btn btn-light me-2 d-fexed"
-              role="button">
 
-             <Badge color="primary" badgeContent={cartItems.length}>
-                 <ShoppingCartOutlinedIcon />{" "}
-             </Badge>
-
-            </button>
+          <button
+            onClick={() => openCart()}
+            className="btn btn-light me-2 d-fexed"
+            role="button"
+          >
+            <Badge color="primary" badgeContent={cartItems.length}>
+              <ShoppingCartOutlinedIcon />{" "}
+            </Badge>
+          </button>
           <div className="d-none d-md-block">
-
             {!isAuth && (
               <a className="btn btn-light me-2" role="button" href="#">
                 SignUp
@@ -251,13 +241,22 @@ export default function Header() {
                     <td>{item.price}</td>
                     <td>{getItemQuantity(item.id)}</td>
                     <td>
-                      <button onClick={()=>increaseCartQuantity(item.id)} className="btn btn-success">
-                      <i className='bx bx-plus' ></i>
+                      <button
+                        onClick={() => increaseCartQuantity(item.id)}
+                        className="btn btn-success"
+                      >
+                        <i className="bx bx-plus"></i>
                       </button>
-                      <button onClick={()=>decreaseCartQuantity(item.id)} className="btn btn-warning ms-2 me-2">
-                      <i className='bx bx-minus' ></i>
+                      <button
+                        onClick={() => decreaseCartQuantity(item.id)}
+                        className="btn btn-warning ms-2 me-2"
+                      >
+                        <i className="bx bx-minus"></i>
                       </button>
-                      <button onClick={()=>removeFromCart(item.id)} className="btn btn-danger">
+                      <button
+                        onClick={() => removeFromCart(item.id)}
+                        className="btn btn-danger"
+                      >
                         <i className="bx bxs-trash"></i>
                       </button>
                     </td>
@@ -272,16 +271,9 @@ export default function Header() {
             >
               Close
             </Button>
-            <Button
-              className="btn  ms-4 "
-              onClick={handelOrder}
-              type="button"
-            >
+            <Button className="btn  ms-4 " onClick={handelOrder} type="button">
               Order
-
             </Button>
-
-            
           </Modal.Body>
         </Modal>
       </nav>

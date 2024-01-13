@@ -24,11 +24,12 @@ export default function Products() {
         },
       })
       .then((res) => {
-        setProducts(res.data);
-        console.log(res.data);
+        console.log("\n\n\n\n", res.data);
+        setTimeout(() => {
+          setProducts(res.data);
+        }, 1000);
       })
       .catch((err) => {
-        console.log(err);
         sessionStorage.setItem("isAuth", "false");
         Navigate("/login");
       });
@@ -62,13 +63,7 @@ export default function Products() {
               >
                 Category
               </button>
-              <ul className="dropdown-menu">
-                {
-                 
-                }
-
-                
-              </ul>
+              <ul className="dropdown-menu">{}</ul>
             </button>
             <button className="main-search-button2  main-search-button">
               Search <i style={{ transform: "" }} className="bx bx-search"></i>
@@ -89,7 +84,9 @@ export default function Products() {
                       data-bs-target="#exampleModal"
                       className="card-img img-fluid"
                     >
-                      <Link to={`/products${product.get_absolute_url}`}>
+                      <Link
+                        to={`/products${product.category.get_absolute_url}${product.name}`}
+                      >
                         <img
                           src={product.get_thumbnail}
                           className="card-img img-fluid"
@@ -104,10 +101,9 @@ export default function Products() {
                     {product.name}{" "}
                     <Tooltip className="mb-1 " title={product.category.name}>
                       <IconButton>
-                        <CategoryIcon  />
+                        <CategoryIcon />
                       </IconButton>
                     </Tooltip>
-                    
                   </h5>
                   <p className="card-text text-center">{product.description}</p>
                   <div className="card-footer">
@@ -119,7 +115,7 @@ export default function Products() {
                       </div>
                       <div className="col">
                         <Link
-                          to={`/products${product.get_absolute_url}`}
+                          to={`/products${product.category.get_absolute_url}${product.name}`}
                           className="btn btn-success btn-block"
                         >
                           View

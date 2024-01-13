@@ -42,8 +42,7 @@ export default function Profile() {
 
   const handleEdit = () => {
     setEditState(!editState);
-    console.log(editState);
-    console.log(user);
+
     if (editState) {
       axiosInstance
         .put("/updateUserInfo/", user, {
@@ -56,13 +55,9 @@ export default function Profile() {
           toast.success("User Info Updated Successfully");
         })
         .catch((err) => {
-          console.log(err);
           toast.error("Error Updating User Info");
           Navigate("/login");
         });
-
-
-      console.log(user);
     }
   };
 
@@ -78,7 +73,6 @@ export default function Profile() {
     }
   };
 
-
   function GetAllProducts() {
     axiosInstance
       .get("/products", {
@@ -88,14 +82,10 @@ export default function Profile() {
       })
       .then((res) => {
         setProducts(res.data);
-        console.log(res.data);
       })
       .catch((err) => {
         navigate("/login");
-        console.log(err);
       });
-
-
   }
 
   useEffect(() => {
@@ -106,7 +96,6 @@ export default function Profile() {
         },
       })
       .then((res) => {
-        console.log(res.data);
         // add all orders to orders state
         setOrders(res.data.user_orders);
         // add user info to user state
@@ -118,18 +107,22 @@ export default function Profile() {
           email: res.data.email,
           address: res.data.address,
         });
-        console.log(res.data.user_orders);
       })
       .catch((err) => {
         navigate("/login");
-        console.log(err);
       });
-
   }, []);
 
-  const getTotalPrice = (id ) => {
-    const p = products.find((product) => product.id === id);
-    return p.price;
+  const getTotalPrice = (id) => {
+    const product = products.find((product) => product.id === id);
+  
+    if (!product) {
+      // Product not found, fetch products and return a placeholder value
+      GetAllProducts();
+      return "Loading...";
+    }
+  
+    return product.price;
   };
 
   useEffect(() => {
@@ -144,20 +137,20 @@ export default function Profile() {
   function GetProductById(id, products) {
     const p = products.find((product) => product.id === id);
     try {
-    return (
-      <>
-        <a
-          className="mt-2 text-dark text-decoration-none"
-          href={p.get_absolute_url}
-        >
-          {p.name} <i className="bx bxs-book-alt"></i>
-        </a>{" "}
-        <br />
-      </>
-    )
-    }
-    catch(err){
-      return <></>
+      return (
+        <>
+          <a
+            className="mt-2 text-dark text-decoration-none"
+            href={p.get_absolute_url}
+          >
+            {p.name} <i className="bx bxs-book-alt"></i>
+          </a>{" "}
+          <br />
+        </>
+      );
+    } catch (err) {
+      
+      return <></>;
     }
   }
 
@@ -170,12 +163,10 @@ export default function Profile() {
           },
         })
         .then((res) => {
-          console.log(res.data);
           setOrders(orders.filter((order) => order.id !== id));
           toast.success("Order Deleted Successfully");
         })
         .catch((err) => {
-          console.log(err);
           toast.error("Error Deleting Order");
           Navigate("/login");
         });
@@ -218,7 +209,6 @@ export default function Profile() {
                 />
 
                 <div className="d-flex justify-content-center mb-2 mt-5">
-
                   <MDBBtn
                     className={`btn btn-${editState ? "primary" : "danger"}`}
                     onClick={handleEdit}
@@ -337,20 +327,18 @@ export default function Profile() {
                       <tr key={index}>
                         <th scope="row">{order.id}</th>
                         <td>
-                        {order.ordered_products.map((product, ind) => {
+                          {order.ordered_products.map((product, ind) => {
                             return (
-                          
                               <>{GetProductById(product.product, products)}</>
-                            
                             );
                           })}
                         </td>
                         <td>
-                        {order.ordered_products.map((product, ind) => {
+                          {order.ordered_products.map((product, ind) => {
                             return (
-                          
-                              <>{getTotalPrice(product.product)} <br/> </>
-                            
+                              <>
+                                {getTotalPrice(product.product)} <br />{" "}
+                              </>
                             );
                           })}
                         </td>

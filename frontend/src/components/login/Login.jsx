@@ -2,13 +2,11 @@ import style from "./login.module.css";
 import bg from "../../assets/images/bg.png";
 import logo from "../../assets/images/logo-sm.svg";
 import axios from "axios";
-import { useNavigate,Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import { ToastContainer, toast } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
-
-
 
 export default function Login() {
   const [error, setError] = useState(null);
@@ -20,24 +18,20 @@ export default function Login() {
     }
   }, []);
 
-
-
-  
-
   const onSubmit = async (values) => {
     try {
       const response = await axios.post(
         "http://127.0.0.1:8000/api/auth/token/",
         values
       );
-      console.log(response);
+
       if (response.status === 200) {
         sessionStorage.setItem("isAuth", true);
         sessionStorage.setItem("token", response.data.access);
         sessionStorage.setItem("_token", response.data.refresh);
         sessionStorage.setItem("username", formik.values.username);
         sessionStorage.setItem("_id", jwtDecode(response.data.access).user_id);
-        
+
         Navigate("/");
       } else {
         setError("error in login");
@@ -50,8 +44,7 @@ export default function Login() {
           draggable: true,
           progress: undefined,
           theme: "colored",
-          });  
-
+        });
       }
     } catch (error) {
       toast.error(" Login Failed", {
@@ -63,8 +56,7 @@ export default function Login() {
         draggable: true,
         progress: undefined,
         theme: "colored",
-        });      
-        console.log(error);
+      });
     }
   };
 
@@ -80,7 +72,7 @@ export default function Login() {
     <>
       <div className={` ${style.bg} `} style={{ background: `url(${bg}) ` }}>
         <div className={`container ${style.cont} `}>
-         <ul
+          <ul
             className="nav nav-pills nav-justified bg-transparentmb-3"
             id="ex1"
             role="tablist"

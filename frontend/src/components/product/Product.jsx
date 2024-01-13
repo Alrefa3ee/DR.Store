@@ -3,14 +3,14 @@ import style from "./product.module.css";
 import bg from "../../assets/images/bg.png";
 import { useShoppingCart } from "../../context/cart/CartContext";
 import axiosInstance from "../../services/config";
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 import { ToastContainer, toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 function Product() {
   const [productData, setProductData] = useState([]);
   const { category, product } = useParams();
-  const {increaseCartQuantity,} = useShoppingCart();
+  const { increaseCartQuantity } = useShoppingCart();
 
   useEffect(() => {
     axiosInstance
@@ -23,9 +23,7 @@ function Product() {
         console.log(res.data);
         setProductData(res.data);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   }, []);
 
   function addToCart() {
@@ -37,28 +35,28 @@ function Product() {
       closeOnClick: true,
       pauseOnHover: true,
       draggable: true,
-      progress: undefined, 
+      progress: undefined,
       theme: "colored",
     });
   }
 
   return (
-    <>        <ToastContainer
-    position="top-right"
-    autoClose={5000}
-    hideProgressBar={false}
-    newestOnTop={false}
-    closeOnClick
-    rtl={false}
-    pauseOnFocusLoss
-    draggable
-    pauseOnHover
-    theme="colored"
-/> 
+    <>
+      {" "}
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
       <div className={style.productContainer}>
-
         <div className={style.title}>
-
           <div
             className={`titlePro ${style.Pro}`}
             style={{ background: `url(${bg})` }}
@@ -76,11 +74,9 @@ function Product() {
             <button onClick={addToCart} className="btn btn-danger ">
               Add To Cart {productData.price} $
             </button>
-
           </h4>
         </div>
       </div>
-
     </>
   );
 }
