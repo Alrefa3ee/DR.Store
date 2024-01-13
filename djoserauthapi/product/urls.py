@@ -8,8 +8,8 @@ from product import views
 
 urlpatterns = [
     path('latest-products/', views.LatestProductsList.as_view()),
-    path('products/<slug:category_slug>/<slug:product_slug>/', views.ProductDetail.as_view()),
-    path('products/<slug:category_slug>/', views.CategoryDetail.as_view()),
+    path('products/<str:category_name>/<str:product_name>/', views.ProductDetail.as_view()),
+    path('products/<str:category_name>/', views.CategoryDetail.as_view()),
     path('categorys/', views.CategorysList.as_view()),
     path('products/', views.ProductsList.as_view()),
     path('auth/token/', TokenObtainPairView.as_view()),
@@ -21,4 +21,5 @@ urlpatterns = [
     path("getOrders/", views.GetProductsDetails.as_view(), name="getOrders"),
     path("DeleteOrder/<str:id>", views.DeleteOrder.as_view(), name="deleteOrder"),
     path("updateUserInfo/", views.EditUserInfo.as_view(), name="updateOrder"),
+    path("search/", views.search, name="search")
 ]

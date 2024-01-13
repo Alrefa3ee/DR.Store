@@ -36,7 +36,6 @@ class Order(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
-    slug = models.SlugField()
 
     class Meta:
         ordering = ('name',)
@@ -45,12 +44,11 @@ class Category(models.Model):
         return self.name
     
     def get_absolute_url(self):
-        return f'/{self.slug}/'
+        return f'/{self.name}/'
 
 class Product(models.Model):
     category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
-    slug = models.SlugField()
     description = models.TextField(blank=True, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     image = models.ImageField(upload_to="uplouds/", blank=True, null=True)
@@ -64,7 +62,7 @@ class Product(models.Model):
         return str(self.name)
 
     def get_absolute_url(self):
-        return f"/{self.category.slug}/{self.slug}/"
+        return f"/{self.category.name}/{self.name}/"
 
     def get_image(self):
         if self.image:
@@ -104,3 +102,5 @@ class Product(models.Model):
 
             return thumbnail
         
+
+

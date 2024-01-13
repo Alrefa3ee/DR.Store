@@ -21,6 +21,7 @@ import {
 import { useState } from "react";
 
 export default function Profile() {
+  const [page, setPage] = useState(1);
   const [editState, setEditState] = useState(false);
   const [orders, setOrders] = useState([]); // [{}]
   const [products, setProducts] = useState([]); // [{}]
@@ -75,13 +76,13 @@ export default function Profile() {
 
   function GetAllProducts() {
     axiosInstance
-      .get("/products", {
+      .get("/products?page_size=1000", {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("token")}`,
         },
       })
       .then((res) => {
-        setProducts(res.data);
+        setProducts(res.data.results);
       })
       .catch((err) => {
         navigate("/login");
@@ -117,7 +118,6 @@ export default function Profile() {
     const product = products.find((product) => product.id === id);
   
     if (!product) {
-      // Product not found, fetch products and return a placeholder value
       GetAllProducts();
       return "Loading...";
     }

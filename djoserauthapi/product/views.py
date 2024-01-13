@@ -6,42 +6,43 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from rest_framework.decorators import permission_classes
+from rest_framework.decorators import permission_classes , authentication_classes
+from rest_framework.pagination import LimitOffsetPagination , PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from django.db.models import Q
 from rest_framework import authentication
 from rest_framework.permissions import IsAuthenticated , AllowAny
 from rest_framework_simplejwt.authentication import JWTAuthentication 
+from django.shortcuts import get_object_or_404
 
 
 
-from .models import Product, Category , OrderedProduct , Order
-from .serializers import ProductSerializer, CategorySerializer,CategoryListSerializer  , OrderSerializer , GetUserInfoSerializer
-
+from .models import Product, Category , OrderedProduct , Order  , User
+from .serializers import ProductSerializer, CategorySerializer,CategoryListSerializer  , OrderSerializer , GetUserInfoSerializer 
 
 
     
 class LatestProductsList(APIView):
 
-    # without authentication
     permission_classes = [AllowAny]
     def get(self, request, format=None):
-        products = Product.objects.all()[0:4]
+        products = Product.objects.all()[0:3]
         serializer = ProductSerializer(products, many=True)
         return Response(serializer.data)
+    
 
 class ProductDetail(APIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
     
-    def get_object(self, category_slug, product_slug):
+    def get_object(self, category_name, product_name):
         try:
-            return Product.objects.filter(category__slug=category_slug).get(slug=product_slug)
+            return Product.objects.filter(category__name=category_name).get(name=product_name)
         except Product.DoesNotExist:
             raise Http404
     
-    def get(self, request, category_slug, product_slug, format=None):
-        product = self.get_object(category_slug, product_slug)
+    def get(self, request, category_name, product_name, format=None):
+        product = self.get_object(category_name, product_name)
         serializer = ProductSerializer(product)
         return Response(serializer.data)
 
@@ -49,14 +50,14 @@ class CategoryDetail(APIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
     
-    def get_object(self, category_slug):
+    def get_object(self, category_name):
         try:
-            return Category.objects.get(slug=category_slug)
+            return Category.objects.get(slug=category_name)
         except Category.DoesNotExist:
             raise Http404
     
-    def get(self, request, category_slug, format=None):
-        category = self.get_object(category_slug)
+    def get(self, request, category_name, format=None):
+        category = self.get_object(category_name)
         serializer = CategorySerializer(category)
         return Response(serializer.data)
     
@@ -71,14 +72,21 @@ class CategorysList(APIView):
         return Response(serializer.data)
 
 
-class ProductsList(APIView):
+class ProductsList(APIView , PageNumberPagination):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
+    pagination_class = PageNumberPagination
+    page_size = 10
+    page_query_param = 'page'
+    page_size_query_param = 'page_size'
+    max_page_size = 1000
+
 
     def get(self, request):
         products = Product.objects.all()
-        serializer = ProductSerializer(products, many=True)
-        return Response(serializer.data)
+        result = self.paginate_queryset(products, request, view=self)
+        serializer = ProductSerializer(result, many=True)
+        return self.get_paginated_response(serializer.data)
 
 class GetProductById(APIView):
     authentication_classes = [JWTAuthentication]
@@ -152,24 +160,20 @@ class DeleteOrder(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class GetProductsDetails(APIView):
+class GetProductsDetails(APIView ):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
+
     def post(self, request, *args, **kwargs):
-        # Get the list of product IDs from the request data
         product_ids_list = request.data
 
-        # List to store product details in the same order as provided
         products_details = []
 
         for product_ids in product_ids_list:
-            # Retrieve products based on the provided IDs
             products = Product.objects.filter(id__in=product_ids)
 
-            # Serialize the products
             serializer = ProductSerializer(products, many=True)
 
-            # Append the serialized data to the response list
             products_details.append(serializer.data)
 
         return Response(products_details, status=status.HTTP_200_OK)
@@ -198,13 +202,19 @@ class EditUserInfo(APIView):
             print("Serializer Errors:", serializer.errors)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+
+
+       
+
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
 def search(request):
-    query = request.data.get('query', '')
+    query = request.query_params.get('q')
 
     if query:
-        products = Product.objects.filter(Q(name__icontains=query) | Q(description__icontains=query))
+        print(query)
+        products = Product.objects.filter(Q(name__icontains=query)|Q(category__name__exact=query))
+        print(products)
         serializer = ProductSerializer(products, many=True)
         return Response(serializer.data)
     else:

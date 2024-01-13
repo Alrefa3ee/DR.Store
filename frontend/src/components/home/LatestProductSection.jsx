@@ -50,8 +50,8 @@ export default function LatestProductSection() {
                 className="col-xl-4 col-lg-4 col-md-6 col-sm-6 bg-light"
               >
                 <div className="single-new-pro mb-30 text-center bg-light">
-                  <Link
-                    to={`/products${product.get_absolute_url}`}
+                  <a
+                    href={`/products${product.category.get_absolute_url}${product.name}/`}
                     className={`bg-light ${style.product_img}`}
                   >
                     <img
@@ -61,18 +61,18 @@ export default function LatestProductSection() {
                       src={product.get_thumbnail}
                       alt="product"
                     />
-                  </Link>
+                  </a>
 
                   <div className={style.product_caption}>
                     <h3 className={style.product_caption_text}>
-                      <Link
+                      <a
                         data-bs-toggle="modal"
                         data-bs-target="#exampleModal"
                         className={style.link_product}
-                        to={`/products${product.get_absolute_url}`}
+                        to={`/products${product.category.get_absolute_url}${product.name}/`}
                       >
                         {product.name}
-                      </Link>
+                      </a>
                     </h3>
                     <span>{product.price}</span>
                   </div>

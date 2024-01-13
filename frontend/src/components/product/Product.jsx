@@ -5,9 +5,15 @@ import { useShoppingCart } from "../../context/cart/CartContext";
 import axiosInstance from "../../services/config";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import Box from '@mui/material/Box';
+import Rating from '@mui/material/Rating';
+import Typography from '@mui/material/Typography';
+
 import { ToastContainer, toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 function Product() {
+  const [rating, setRating] = useState(0);
+
   const [productData, setProductData] = useState([]);
   const { category, product } = useParams();
   const { increaseCartQuantity } = useShoppingCart();
@@ -23,7 +29,11 @@ function Product() {
         console.log(res.data);
         setProductData(res.data);
       })
-      .catch((err) => {});
+      .catch((err) => {
+        console.log(err);
+        
+      });
+
   }, []);
 
   function addToCart() {
@@ -39,6 +49,13 @@ function Product() {
       theme: "colored",
     });
   }
+
+  useEffect(() => {
+    if (rating !== 0 && rating !== null) {
+      console.log(rating);
+    }
+    
+  }, [rating]);
 
   return (
     <>
@@ -70,11 +87,25 @@ function Product() {
         <div className={`container ${style.productDetails}`}>
           <h2>{productData.name}</h2>
           <h3>{productData.description}</h3>
-          <h4>
+          <h4 className="d-flex flex-column justify-content-center">
             <button onClick={addToCart} className="btn btn-danger ">
               Add To Cart {productData.price} $
             </button>
+            <Box className="mt-5 h3"
+              sx={{
+                '& > legend': { mt: 2 },
+              }}>
+            
+            <Rating
+              name="simple-controlled"
+              value={rating}
+              onChange={(event, newValue) => {
+                setRating(newValue);
+              }}
+            />
+            </Box>
           </h4>
+
         </div>
       </div>
     </>

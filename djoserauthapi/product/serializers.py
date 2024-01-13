@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Category, Product , Order , OrderedProduct
+from .models import Category, Product , Order , OrderedProduct 
 from django.contrib.auth import get_user_model
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -91,6 +91,7 @@ class ProductSerializer(serializers.ModelSerializer):
             "price",
             "get_image",
             "get_thumbnail",
+            "date_added",
             "category",
         )
 
@@ -133,3 +134,5 @@ class GetUserInfoSerializer(serializers.ModelSerializer):
             "address",
             "user_orders"
         )
+
+

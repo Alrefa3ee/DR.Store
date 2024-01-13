@@ -7,18 +7,37 @@ import IconButton from "@mui/material/IconButton";
 import CategoryIcon from "@mui/icons-material/Category";
 import Tooltip from "@mui/material/Tooltip";
 import axiosInstance from "../../services/config";
+import Typography from "@mui/material/Typography";
 import "./Products.css";
+import Grid from "@mui/material/Grid";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const [categorys, setCategorys] = useState([]);
   const Navigate = useNavigate();
 
+
   useEffect(() => {
+        
     if (sessionStorage.getItem("isAuth") !== "true") {
       Navigate("/login");
     }
+    if(categorys.length === 0){
+      
+      axiosInstance.get("/categorys",{ headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },}).then((res) => {
+        setCategorys(res.data);
+      })
+      }
+  }, []);
+  useEffect(() => {
+
     axiosInstance
-      .get("/products", {
+      .get(`/products?page=${page}`, {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("token")}`,
         },
@@ -26,22 +45,82 @@ export default function Products() {
       .then((res) => {
         console.log("\n\n\n\n", res.data);
         setTimeout(() => {
-          setProducts(res.data);
+          if(products.length === 0){
+            setProducts(res.data.results);
+          }
+          else{
+            setProducts([...products, ...res.data.results]);
+          }
         }, 1000);
       })
       .catch((err) => {
-        sessionStorage.setItem("isAuth", "false");
-        Navigate("/login");
+        if (err.response.status === 401) {
+          sessionStorage.setItem("isAuth", "false");
+          Navigate("/login");
+        }
+        else if(err.response.status === 404 && products.next == null){
+          toast.info("this is all products avaliable", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+        }
       });
-  }, []);
+  }, [page]);
 
-  function handelSearch(e) {
-    const search = e.target.value;
-  }
-
+  const handelSearch = () => {
+    console.log(search);
+    if (search) {
+     
+    
+    axiosInstance
+      .post(`search/?q=${search}`, {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        },
+      })
+      .then((res) => {
+        setProducts(res.data);
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    }
+    else{
+      toast.error("Please Enter Product Name", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }
+  };
   return (
-    <>
+    <>        <ToastContainer
+    position="top-right"
+    autoClose={5000}
+    hideProgressBar={false}
+    newestOnTop={false}
+    closeOnClick
+    rtl={false}
+    pauseOnFocusLoss
+    draggable
+    pauseOnHover
+    theme="colored"
+  />
       <div style={{ background: `url(${bg})` }} className={`product_section`}>
+
+
         <div className={`titlePro`}>
           <h1>Products</h1>
         </div>
@@ -50,7 +129,11 @@ export default function Products() {
             <div className="main-search-input-item">
               <input
                 type="text"
-                onChange={handelSearch}
+                name="search"
+                value={search}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                }}
                 placeholder="Search Products..."
               />
             </div>
@@ -63,12 +146,39 @@ export default function Products() {
               >
                 Category
               </button>
-              <ul className="dropdown-menu">{}</ul>
+              <ul className="dropdown-menu">{
+                categorys.map((category) => (
+                  <li key={category.id}>
+                    <button
+                    onClick={(name) => {
+                      axiosInstance.post(`search/?q=${category.name}`, {
+                        headers: {
+                          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+                        },
+                      })
+                      .then((res) => {
+                        setProducts(res.data);
+                        console.log(res.data);
+                      })
+                    }}
+                      
+                      className="dropdown-item"
+                    >
+                      {category.name}
+                    </button>
+                  </li>
+                ))
+              }</ul>
             </button>
-            <button className="main-search-button2  main-search-button">
+            <button
+              onClick={handelSearch}
+              className="main-search-button2  main-search-button"
+            >
               Search <i style={{ transform: "" }} className="bx bx-search"></i>
             </button>
+            
           </div>
+          
         </div>
       </div>
 
@@ -127,6 +237,20 @@ export default function Products() {
               </div>
             </div>
           ))}
+
+          <div className="col-12 mt-5 ">
+            <div className="d-flex justify-content-center">
+              <button
+                onClick={() => {
+                  setPage(page + 1);
+                }}
+                className="btn btn-dark"
+              >
+                Load More
+              </button>
+            </div>
+
+            </div>
         </div>
       </div>
     </>
