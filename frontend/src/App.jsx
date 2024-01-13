@@ -18,6 +18,7 @@ import Logout from "./components/Logout";
 import { useNavigate } from "react-router-dom";
 import Profile from "./components/profile/Profile";
 import ShoppingCartProvider  from "./context/cart/CartContext";
+import ProductRecommendation from "./components/productRecommendation/ProductRecommendation";
 function StaticSection(porps) {
   const navigate = useNavigate();
   const [isLoding, setIsLoding] = useState(true);
@@ -83,6 +84,7 @@ function App() {
             <Route path="/profile" element={<StaticSection element={<Profile />}/>} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          {/* <Route path="/ProductRecommendation" element={<ProductRecommendation />} /> */}
           <Route path="/logout" element={<Logout />} />
           <Route path="*" element={<NotFound/>} />
         </Routes>

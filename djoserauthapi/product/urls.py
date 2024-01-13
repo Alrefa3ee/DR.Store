@@ -23,4 +23,5 @@ urlpatterns = [
     path("updateUserInfo/", views.EditUserInfo.as_view(), name="updateOrder"),
     path("search/", views.search, name="search"),
     path("product/<str:product_pk>/rating/", views.RatingViewSet.as_view({"get": "list", "post": "create"})),
+    # path('product/recommendations/', views.ProductRecommendation.as_view(), name='product_recommendations'),
 ]
