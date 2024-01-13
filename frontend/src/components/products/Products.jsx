@@ -14,6 +14,7 @@ import { ToastContainer, toast } from "react-toastify";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
+  const [loadstate, setLoadstate] = useState(true);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [categorys, setCategorys] = useState([]);
@@ -59,6 +60,7 @@ export default function Products() {
           Navigate("/login");
         }
         else if(err.response.status === 404 && products.next == null){
+          setLoadstate(false);
           toast.info("this is all products avaliable", {
             position: "top-right",
             autoClose: 5000,
@@ -150,7 +152,7 @@ export default function Products() {
                 categorys.map((category) => (
                   <li key={category.id}>
                     <button
-                    onClick={(name) => {
+                    onClick={() => {
                       axiosInstance.post(`search/?q=${category.name}`, {
                         headers: {
                           Authorization: `Bearer ${sessionStorage.getItem("token")}`,
@@ -168,6 +170,36 @@ export default function Products() {
                     </button>
                   </li>
                 ))
+
+                  }{
+                  <button
+                    onClick={() => {
+                      axiosInstance
+                        .get(`/products?page=${page}`, {
+                          headers: {
+                            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+                          },
+                        })
+                        .then((res) => {
+                          console.log("\n\n\n\n", res.data);
+                          setTimeout(() => {
+                            setProducts(res.data.results);
+                          }, 1000);
+                        })
+                        .catch((err) => {
+                          if (err.response.status === 401) {
+                            sessionStorage.setItem("isAuth", "false");
+                            Navigate("/login");
+                          }
+                        });
+                    }}
+                    className="dropdown-item"
+                  >
+                    All
+                  </button>
+
+               
+
               }</ul>
             </button>
             <button
@@ -238,6 +270,9 @@ export default function Products() {
             </div>
           ))}
 
+
+          {loadstate && (
+
           <div className="col-12 mt-5 ">
             <div className="d-flex justify-content-center">
               <button
@@ -251,7 +286,8 @@ export default function Products() {
             </div>
 
             </div>
-        </div>
+         )}
+        </div> 
       </div>
     </>
   );

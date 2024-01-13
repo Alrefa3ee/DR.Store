@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Category, Product , Order , OrderedProduct 
+from .models import Category, Product , Order , OrderedProduct , Rating
 from django.contrib.auth import get_user_model
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -135,4 +135,15 @@ class GetUserInfoSerializer(serializers.ModelSerializer):
             "user_orders"
         )
 
+
+class RatingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Rating
+        fields = ["id", "rating", "description"]
+    
+    def create(self, validated_data):
+        product_id = self.context["product_id"]
+        user_id = self.context["user_id"]
+        rating = Rating.objects.create(product_id = product_id, user_id=user_id, **self.validated_data)
+        return rating
 

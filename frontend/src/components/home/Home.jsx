@@ -6,33 +6,30 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function Home() {
-
-    if (sessionStorage.getItem("isAuth") === "true") {
-      console.log("welcome");
-      toast.success(`Welcome ${sessionStorage.getItem("username")}`, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      });
-    }
-    else{
-      toast.warning(`Welcome Guest Login To Show Products`, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      });
-    }
-  
+  if (sessionStorage.getItem("isAuth") === "true") {
+    console.log("welcome");
+    toast.success(`Welcome ${sessionStorage.getItem("username")}`, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
+  } else {
+    toast.warning(`Welcome Guest Login To Show Products`, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
+  }
 
   return (
     <>
@@ -51,12 +48,11 @@ export default function Home() {
         />
         <div className={style.hero_content}>
           <h2>
-            TimeZone is a modern impactful <br /> and responsive
+            Ecommerce Website for Seamless <br /> Online Shopping
           </h2>
           <p>
-            TimeZone is a modern, impactful and responsive watch store website
-            template. If you are looking to create a solid online presence for
-            your watch brand or
+            Built with Django and React, this dynamic ecommerce platform
+            provides a smooth and engaging user experience.
           </p>
           <Link to="/products" className={style.hero_btn}>
             Shop Now

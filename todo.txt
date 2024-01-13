@@ -11,8 +11,8 @@ DONE Implement CRUD functionality for the application.
 DONE Use Bootstrap or Material UI for styling.
 DONE Implement user authentication and authorization.
 DONE Implement product search and filtering.
-Implement product pagination.
-Implement product reviews and ratings.
+DONE Implement product pagination.
+DONE Implement product reviews and ratings.
 Implement product recommendations using collaborative filtering.
 Steps:
 
@@ -29,9 +29,9 @@ DONE Implement CRUD functionality for the e-commerce website using React compone
 DONE Implement user authentication and authorization using Django's built-in authentication system.
 
 
-Implement product search and filtering using Django's ORM.
-Implement product pagination using Django's built-in pagination system.
-Implement product reviews and ratings using Django's built-in review system.
+DONE Implement product search and filtering using Django's ORM.
+DOEN Implement product pagination using Django's built-in pagination system.
+DONE Implement product reviews and ratings using Django's built-in review system.
 Implement product recommendations using collaborative filtering using a recommendation library like TensorFlow or PyTorch.
 Use Bootstrap or Material UI for styling.
 Time Estimate: 4-6 work days.

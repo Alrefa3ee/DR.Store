@@ -21,5 +21,6 @@ urlpatterns = [
     path("getOrders/", views.GetProductsDetails.as_view(), name="getOrders"),
     path("DeleteOrder/<str:id>", views.DeleteOrder.as_view(), name="deleteOrder"),
     path("updateUserInfo/", views.EditUserInfo.as_view(), name="updateOrder"),
-    path("search/", views.search, name="search")
+    path("search/", views.search, name="search"),
+    path("product/<str:product_pk>/rating/", views.RatingViewSet.as_view({"get": "list", "post": "create"})),
 ]

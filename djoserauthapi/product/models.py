@@ -54,6 +54,8 @@ class Product(models.Model):
     image = models.ImageField(upload_to="uplouds/", blank=True, null=True)
     thumbnail = models.ImageField(upload_to="uplouds/", blank=True, null=True)
     date_added = models.DateTimeField(auto_now_add=True)
+    
+    rating = models.IntegerField(default=0 , blank=True, null=True, choices=[(i, i) for i in range(1, 6)])
 
     class Meta:
         ordering = ("-date_added",)
@@ -103,4 +105,15 @@ class Product(models.Model):
             return thumbnail
         
 
+class Rating(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name ='product_rating')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    description = models.TextField(blank=True, null=True)
+    rating = models.PositiveIntegerField(choices=((1, '1 star'), (2, '2 stars'), (3, '3 stars'), (4, '4 stars'), (5, '5 stars')))
+    created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        unique_together = ('product', 'user')
+
+    def __str__(self):
+        return f"{self.user}'s {self.rating}-star rating for {self.product}"

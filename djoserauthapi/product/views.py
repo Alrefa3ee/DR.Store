@@ -3,7 +3,8 @@ from django.http import Http404
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework.views import APIView
+from rest_framework.views import APIView 
+from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.decorators import permission_classes , authentication_classes
@@ -11,14 +12,15 @@ from rest_framework.pagination import LimitOffsetPagination , PageNumberPaginati
 from rest_framework.permissions import IsAuthenticated
 from django.db.models import Q
 from rest_framework import authentication
+
 from rest_framework.permissions import IsAuthenticated , AllowAny
 from rest_framework_simplejwt.authentication import JWTAuthentication 
 from django.shortcuts import get_object_or_404
 
 
 
-from .models import Product, Category , OrderedProduct , Order  , User
-from .serializers import ProductSerializer, CategorySerializer,CategoryListSerializer  , OrderSerializer , GetUserInfoSerializer 
+from .models import Product, Category , OrderedProduct , Order  , User , Rating
+from .serializers import ProductSerializer, CategorySerializer,CategoryListSerializer  , OrderSerializer , GetUserInfoSerializer  , RatingSerializer
 
 
     
@@ -30,6 +32,27 @@ class LatestProductsList(APIView):
         serializer = ProductSerializer(products, many=True)
         return Response(serializer.data)
     
+
+class RatingViewSet(ModelViewSet):
+    # queryset = Rating.objects.all()
+    serializer_class = RatingSerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]    
+
+    def get_queryset(self):
+        print(self.kwargs['product_pk'])
+        return Rating.objects.filter(product_id = self.kwargs['product_pk'])
+    
+    def get_serializer_context(self):
+        user_id = self.request.user.id
+        product_id = self.kwargs["product_pk"]
+        print(user_id)
+        return {"user_id": user_id, "product_id": product_id}
+    
+
+
+
+
 
 class ProductDetail(APIView):
     authentication_classes = [JWTAuthentication]
@@ -79,7 +102,7 @@ class ProductsList(APIView , PageNumberPagination):
     page_size = 10
     page_query_param = 'page'
     page_size_query_param = 'page_size'
-    max_page_size = 1000
+    max_page_size = 10
 
 
     def get(self, request):
