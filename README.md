@@ -3,7 +3,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/Alrefa3ee">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="images/logo-sm.svg" alt="Logo">
   </a>
 
   <h3 align="center">Dr.Store</h3>
@@ -26,7 +26,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-<img src="images/screenshot.png" >
+<img src="images/screenshot.jpeg" >
 
 # Ecommerce Website for Seamless Online Shopping
 
