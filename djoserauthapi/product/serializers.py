@@ -146,4 +146,10 @@ class RatingSerializer(serializers.ModelSerializer):
         user_id = self.context["user_id"]
         rating = Rating.objects.create(product_id = product_id, user_id=user_id, **self.validated_data)
         return rating
+    
+
+class RecommendSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = "__all__"
 

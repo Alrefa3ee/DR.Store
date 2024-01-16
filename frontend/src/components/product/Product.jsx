@@ -16,10 +16,12 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import { ToastContainer, toast } from "react-toastify";
 import { useParams } from "react-router-dom";
+import { isString } from "formik";
 function Product() {
   const [rating, setRating] = useState(2);
+  const [imgSrc, setImgSrc] = useState("");
   const [description, setDescription] = useState("");
-  const [productData, setProductData] = useState([]);
+  const [productData, setProductData] = useState({});
   const { category, product } = useParams();
   const { increaseCartQuantity } = useShoppingCart();
   const [resentReviews, setResentReviews] = useState([]);
@@ -37,7 +39,9 @@ function Product() {
       })
       .then((res) => {
         console.log(res.data);
+        setImgSrc(res.data.get_image);
         setProductData(res.data);
+        console.log(productData);
       })
       .catch((err) => {
         console.log(err);
@@ -113,6 +117,11 @@ function Product() {
     });
   }, [productData.id]);
 
+  function handelImageSrc(src) {
+    return src.replace("/media/", "").replace("%3A", ":");
+    
+  }
+  
   return (
     <>
       {" "}
@@ -138,7 +147,7 @@ function Product() {
           </div>
         </div>
         <div className={`container mb-5 ${style.image_container}`}>
-          <img src={productData.get_image} className={style.image} alt="" />
+          <img src={handelImageSrc(imgSrc)} className={style.image} alt="" />
         </div>
         <div className={`container ${style.productDetails}`}>
           <h2>{productData.name}</h2>

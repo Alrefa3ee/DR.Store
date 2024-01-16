@@ -84,7 +84,17 @@ function App() {
             <Route path="/profile" element={<StaticSection element={<Profile />}/>} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          {/* <Route path="/ProductRecommendation" element={<ProductRecommendation />} /> */}
+          <Route path="/recommendation" element={
+            
+            <>
+            <Header />
+            <ProductRecommendation />
+            <ShopMethod />
+            <MainFooter />
+
+
+            </>
+          } />
           <Route path="/logout" element={<Logout />} />
           <Route path="*" element={<NotFound/>} />
         </Routes>

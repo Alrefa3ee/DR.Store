@@ -107,6 +107,9 @@ export default function Products() {
       });
     }
   };
+
+  const handelImageSrc = (src) => src.replace("/media/", "").replace("%3A", ":");
+
   return (
     <>        <ToastContainer
     position="top-right"
@@ -230,7 +233,7 @@ export default function Products() {
                         to={`/products${product.category.get_absolute_url}${product.name}`}
                       >
                         <img
-                          src={product.get_thumbnail}
+                          src={handelImageSrc(product.get_image)}
                           className="card-img img-fluid"
                           width="96"
                           height="350"

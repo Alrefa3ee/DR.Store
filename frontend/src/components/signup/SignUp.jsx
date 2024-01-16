@@ -29,7 +29,7 @@ const Register = () => {
 
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/auth/users/",
+        "http://127.0.0.1:8000/auth/users/",
         formData
       );
 

@@ -1,0 +1,10 @@
+.imgev{
+
+    object-fit: cover;
+    transition: all 0.5s ease-in-out;
+    cursor: pointer;
+
+}
+.imgev:hover{
+    transform: scale(1.1);
+}

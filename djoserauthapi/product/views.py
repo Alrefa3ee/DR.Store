@@ -6,19 +6,21 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from rest_framework.decorators import permission_classes, authentication_classes
-from rest_framework.pagination import LimitOffsetPagination, PageNumberPagination
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from django.db.models import Q
-from rest_framework import authentication
+from rest_framework.decorators import api_view
+
+from surprise import Dataset, Reader
+from surprise.model_selection import train_test_split
+from surprise import KNNBasic
+import pandas as pd
 
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from django.shortcuts import get_object_or_404
 
 
-
-from .models import Product, Category, OrderedProduct, Order, User, Rating
+from .models import Product, Category, OrderedProduct, Order, Rating
 from .serializers import (
     ProductSerializer,
     CategorySerializer,
@@ -245,37 +247,45 @@ def search(request):
         return Response({"products": []})
 
 
-# class ProductRecommendation(APIView):
-#     permission_classes = [IsAuthenticated]
 
-#     def get(self, request, *args, **kwargs):
-#         user_ratings = Rating.objects.filter(user=request.user)
+class ProductRecommendation(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
-#         reader = Reader(rating_scale=(1, 5))
-#         data = Dataset.load_from_df(
-#             user_ratings[["user_id", "product_id", "rating"]], reader
-#         )
-#         trainset = data.build_full_trainset()
+    def get(self, request, *args, **kwargs):
+        # get the pruduct id for the max rating user 
+        max_rating_user = Rating.objects.filter(user_id=request.user.id).order_by('-rating')[0].product_id
+        print(max_rating_user)
 
-#         model = SVD()
-#         model.fit(trainset)
+        ratings = Rating.objects.filter(product_id=max_rating_user)
+        print(ratings)
+        ratings_df = pd.DataFrame(
+            list(ratings.values("user__id", "product__id", "rating"))
+        )  
+        reader = Reader(rating_scale=(1, 5))
+        data = Dataset.load_from_df(
+            ratings_df[["user__id", "product__id", "rating"]], reader
+        ) 
+        trainset, testset = train_test_split(data, test_size=0.25)
 
-#         unrated_products = Product.objects.exclude(
-#             id__in=user_ratings.values_list("product_id", flat=True)
-#         )
+        sim_options = {"name": "cosine", "user_based": True}
+        algo = KNNBasic(sim_options=sim_options)
 
-#         recommendations = []
-#         for product in unrated_products:
-#             predicted_rating = model.predict(request.user.id, product.id).est
-#             recommendations.append(
-#                 {"product_id": product.id, "predicted_rating": predicted_rating}
-#             )
+        algo.fit(trainset)
 
-#         recommendations.sort(key=lambda x: x["predicted_rating"], reverse=True)
+        all_product_ids = list(Product.objects.values_list("id", flat=True))
+        # all_product_ids.remove(product_id)
 
-#         top_recommendations = recommendations[:5]
-
-#         serializer = RatingSerializer(data=top_recommendations, many=True)
-#         serializer.is_valid()
-
-#         return Response(serializer.data)
+        recommendations = []
+        for other_product_id in all_product_ids:
+            prediction = algo.predict(request.user.id, other_product_id)
+            recommendations.append(
+                {"product_id": other_product_id, "predicted_rating": prediction.est}
+            )
+        recommendations.sort(key=lambda x: x["predicted_rating"], reverse=True)
+        products = []
+        for i in recommendations[:5]:
+            products.append(Product.objects.get(id=i["product_id"]))
+        print(products[0].get_image)
+        serializer = ProductSerializer(products, many=True)
+        return Response({"recommendations": serializer.data })

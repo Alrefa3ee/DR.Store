@@ -35,9 +35,11 @@ height: 24px;
 }
 .product_img{
     margin-top: 20px;
+    width: 100%;
 }
 .product_img img{
     object-fit: cover;
+    width: 250px;
     background-color: transparent !important;
     transition: all 0.5s ease-in-out;
 }

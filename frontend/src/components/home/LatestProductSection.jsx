@@ -11,17 +11,11 @@ export default function LatestProductSection() {
   useEffect(() => {
     axiosInstance
       .get("/latest-products", {
-        // headers: {
-        //   Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-        // },
       })
       .then((res) => {
         setLatesetProducts(res.data);
         console.log(res.data);
       })
-      .catch((err) => {
-        Navigate("/login");
-      });
   }, []);
 
   function timeSince(date) {
@@ -38,6 +32,7 @@ export default function LatestProductSection() {
       return Math.floor(hours / 24) + " days";
     }
   }
+  const handelImageSrc = (src) => src.replace("/media/", "").replace("%3A", ":");
 
   return (
     <>
@@ -57,8 +52,8 @@ export default function LatestProductSection() {
                     <img
                       data-bs-toggle="modal"
                       data-bs-target="#exampleModal"
-                      className={`bg-light`}
-                      src={product.get_thumbnail}
+                      className={`bg-light `}
+                      src={handelImageSrc(product.get_image)}
                       alt="product"
                     />
                   </a>

@@ -148,8 +148,8 @@ export default function Header() {
                 </NavLink>
               </li>
               <li className="nav-item">
-                <NavLink className="nav-link" to={"/about"}>
-                  About
+                <NavLink className="nav-link" to={"/recommendation"}>
+                Recommendation
                 </NavLink>
               </li>
               <li className="nav-item">
