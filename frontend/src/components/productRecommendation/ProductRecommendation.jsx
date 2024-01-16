@@ -54,7 +54,7 @@ export default function ProductRecommendation() {
       }
 
 
-    <div className="container t">
+    <div className="container ">
       <h2 className='text-center pt-3 pb-3 mt-5 mb-5'>
         <span className="text-danger text-center">Recommended</span> Products
 

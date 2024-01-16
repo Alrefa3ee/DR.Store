@@ -12,6 +12,7 @@ import MainFooter from "./components/footer/MainFooter";
 import Product from "./components/product/Product";
 import Products from "./components/products/Products";
 import ShopMethod from "./components/footer/ShopMethod";
+import Contact from "./components/contact/Contact.jsx";
 import Register from "./components/signup/SignUp";
 import Login from "./components/login/Login";
 import Logout from "./components/Logout";
@@ -96,6 +97,12 @@ function App() {
             </>
           } />
           <Route path="/logout" element={<Logout />} />
+          <Route path="/contact" element={
+          <>
+          <Header />
+          <Contact />
+            <MainFooter/></>
+          } />
           <Route path="*" element={<NotFound/>} />
         </Routes>
         </ShoppingCartProvider>
