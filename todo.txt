@@ -34,34 +34,4 @@ DOEN Implement product pagination using Django's built-in pagination system.
 DONE Implement product reviews and ratings using Django's built-in review system.
 Implement product recommendations using collaborative filtering using a recommendation library like TensorFlow or PyTorch.
 Use Bootstrap or Material UI for styling.
-Time Estimate: 4-6 work days.
-
-
-
-
-
-
-
-
-
-
-
-
-
-Create Register / login functionality:
-
-    DONE    1- backend:
-                    - djoser
-                    - register user accounts 
-                    - login system and token authentication
-                    
-
-     Done    2-frontend:
-
-                    - register componant 
-                    - register requests
-                    - login componant
-                    - login requests
-                   X - AuthProvider
-
 
